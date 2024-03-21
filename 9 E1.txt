@@ -1,0 +1,20 @@
+1)
+Select naam, SUM(zwartgeld) Form bank Where sum(zwartgeld)>255;
+
+SELECT naam, sum(zwartgeld)
+FROM bank
+GROUP BY naam
+HAVING SUM(zwartgeld) > 255
+
+2)
+SELECT count() FROM spelers AS Micheal WHERE naam = "Charlie Skyer";
+
+SELECT COUNT(*)
+FROM spelers
+WHERE naam = 'Charlie Skyer'
+
+3)
+SELEKT * FROM   klanten,deelnames;
+
+SELECT *
+FROM klanten CROSS JOIN deelnames
