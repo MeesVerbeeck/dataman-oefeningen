@@ -1,0 +1,110 @@
+1 Inleiding vak:
+
+deze fouten zijn automatisch onvoldoende:
+-Niet kunnen normaliseren, technisch (pk,un,fk) of conceptueel (SDG)
+-Fouten tegen de conceptuele verwerking van een select-instructie 
+-Vergeten te joinen wanneer dit moet
+-Niet kunnen werken met transakties
+-Data niet kunnen beveiligen (DCL, sec)
+-De query cost niet kunnen vergelijken (perf)
+
+
+2 CLA:
+
+CA = Contributor Agreement (De termen waaronder intelectual property wordt verdeeld)
+CAA = Contributor Assignment Agreement (Volledige eigenaarschap voor de projecteigenaar)
+CLA = Contributor License Agreement (Volledige licentie voor de projecteigenaar)
+
+
+3 Herhaling ERM:
+
+Redundantie Vermijden
+Consistentie Bewaken
+
+PK's zijn best minimaal, moeten uniek zijn en zijn nooit NULL
+FK's kunnen NULL zijn
+
+
+4 Herhaling SQL:
+
+SQL = Structured Query Language
+
+SELECT
+FROM
+WHERE
+GROUP BY
+HAVING
+ORDER BY
+
+volgorde (logisch): FROM -> WHERE -> GROUP BY -> HAVING -> SELECT -> ORDER BY
+
+INSERT INTO
+UPDATE
+DELETE FROM
+
+CREATE TABLE
+GRANT
+
+EXTRACT()
+CAST()
+TO_CHAR()
+ROUND()
+...
+
+CASE
+    WHEN a IS NULL THEN 'niks'
+    WHEN a = b THEN 'b'
+    ELSE 'c'
+END
+
+verschillende manieren om te joinen:
+SELECT *
+FROM tabel_a JOIN tabel_b
+    USING(kolom_a)
+-> uitkomst zal maar 1 keer kolom_a hebben
+
+SELECT *
+FROM tabel_a JOIN tabel_b
+    ON tabel_a.kolom_a = tabel_b.kolom_a
+-> uitkomst zal 2 keer kolom_a hebben
+
+SELECT *
+FROM tabel_a LEFT OUTER JOIN tabel_b
+    ON tabel_a.kolom_a = tabel_b.kolom_a
+-> alle waardes van kolom_a uit tabel_a behouden, dan als er een match op kolom_a is uit tabel_b join je die rij, anders NULL
+
+SELECT *
+FROM tabel_a LEFT OUTER JOIN tabel_b
+    ON tabel_a.kolom_a = tabel_b.kolom_a
+    AND tabel_b.kolom_b > 3
+-> eerst JOIN condition, daarna LEFT OUTER JOIN, dus null waar tabel_b.kolom_b =< 3
+
+SELECT *
+FROM tabel_a LEFT OUTER JOIN tabel_b
+    ON tabel_a.kolom_a = tabel_b.kolom_a
+WHERE tabel_b.kolom_b > 3
+-> eerst LEFT OUTER JOIN, daarna WHERE condition, dus geen rij waar tabel_b.kolom_b =< 3
+
+data aanpassen:
+CREATE TABLE tabel_a (
+    id numeric(4,0)         NOT NULL,
+    kolom_a numeric(10,0)   NOT NULL,
+    kolom_b numeric(10,0)   NOT NULL,    
+    CONSTRAINT tabel_a_pkey PRIMARY KEY(id),
+    CONSTRAINT tabel_a_tabel_b_fkey REFERENCES tabel_b(id)
+)
+
+UPDATE tabel_a
+SET kolom_a = 5
+    kolom_b = 8
+WHERE id = 1
+
+DELETE
+FROM tabel_a
+WHERE id = 1
+-> zonder WHERE wordt alles verwijderd
+
+rechten:
+GRANT SELECT, UPDATE, INSERT, DELETE, USAGE, ALL
+ON TABLE tabel_a
+TO user_a
